@@ -1,0 +1,6 @@
+out
+.vs
+*.lib
+*.dll
+*.sln
+CMakePresets.json
