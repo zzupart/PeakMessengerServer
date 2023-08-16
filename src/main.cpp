@@ -3,16 +3,22 @@
 #include "database.h"
 
 int main() {
-	/*if (sqlite3_initialize() != SQLITE_OK) {
+	int rc = sqlite3_initialize();
+	if (rc != SQLITE_OK) {
 		std::cerr << "SQLite initialization failed." << std::endl;
-		return 1;
+		return rc;
 	}
-	sqlite3* db;
-	int rc = dbConnect("userinfo.db", db);
+	sqlite3* db = nullptr;
+	rc = dbConnect("userinfo.db", &db);
 	if (rc != SQLITE_OK) { 
-		return 1;
+		sqlite3_close(db);
+		return rc;
 	}
-	dbInit(db);
+	rc = dbInit(db);
+	if (rc != SQLITE_OK) {
+		sqlite3_close(db);
+		return rc;
+	}
 	sqlite3_close(db);
 
 	CROW_ROUTE(app, "/").methods("GET"_method)(handleHomeRoute);
@@ -20,5 +26,5 @@ int main() {
 
 	app.port(2323).multithreaded().run();
 
-	return 0;*/
+	return 0;
 }
