@@ -7,5 +7,4 @@ project ("PeakMessengerServer")
 add_subdirectory ("src")
 add_subdirectory("tests")
 add_subdirectory ("libs/SQLite3")
-
-target_link_libraries(server_start PRIVATE sqlite3)
+add_subdirectory ("libs/spdlog")
