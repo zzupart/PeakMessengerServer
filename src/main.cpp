@@ -1,22 +1,13 @@
-#include "routes.h"
-#include "server.h"
-#include "database.h"
+#include "routes.h" 
 
 int main() {
-	int rc = sqlite3_initialize();
-	if (rc != SQLITE_OK) {
-		std::cerr << "SQLite initialization failed." << std::endl;
-		exit(rc);
-	}
-	DBConnect("userinfo.db");
-	DBInit();
-	PrepareStatements();
+   	DBManager::Get(); 
 
-	CROW_ROUTE(app, "/").methods("GET"_method)(HandleHomeRoute);
-	CROW_ROUTE(app, "/register").methods("POST"_method)(HandleRegister);
+	CROW_ROUTE(app, "/").methods("GET"_method)(Routes::HandleHomeRoute); 
+	CROW_ROUTE(app, "/register").methods("POST"_method)(Routes::HandleRegisterRoute);
 
-	std::atexit(DBClear);
-	app.port(2323).multithreaded().run();
+	std::atexit(DBManager::Get()->Close);
+	app.port(2323).multithreaded().run(); 
 
 	return 0;
 }
